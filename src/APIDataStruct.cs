@@ -87,16 +87,16 @@ namespace STS_Bcut.src
         {
             var (s_h, s_m, s_s, s_ms) = _Srt_Time_Conv_(start_time);
             var (e_h, e_m, e_s, e_ms) = _Srt_Time_Conv_(end_time);
-            return $"{s_h:02d}:{s_m:02d}:{s_s:02d},{s_ms:03d} --> {e_h:02d}:{e_m:02d}:{e_s:02d},{e_ms:03d}";
+            return string.Format("{0:00}:{1:00}:{2:00},{3:000} --> {4:00}:{5:00}:{6:00},{7:000}", s_h, s_m, s_s, s_ms, e_h, e_m, e_s, e_ms);
         }
 
         public string ToLrcTs()
         {
             var (s_m, s_s, s_ms) = _Lrc_Time_Conv_(start_time);
-            return $"[{s_m:02d}:{s_s:02d}.{s_ms:02d}]";
+            return string.Format("[{0:00}:{1:00}.{2:00}]", s_m, s_s, s_ms);
         }
     }
-        
+
 
     public class STSData
     {
@@ -116,11 +116,11 @@ namespace STS_Bcut.src
         public string ToSrt()
         {
             List<string> srt = new();
-            for(int i = 0 ; i < utterances.Count; i++)
+            for (int i = 0; i < utterances.Count; i++)
             {
-                srt.Add($"{i+1}\n{utterances[i].ToSrtTs()}\n{utterances[i].transcript}\n");
+                srt.Add($"{i + 1}\n{utterances[i].ToSrtTs()}\n{utterances[i].transcript}\n");
             }
-            return string.Join("\n",srt);
+            return string.Join("\n", srt);
         }
 
         public string ToLrc()

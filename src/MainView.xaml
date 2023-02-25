@@ -35,17 +35,17 @@
                     materialdesign:HintAssist.Hint="选择输出文件格式"
                     SelectedIndex="{Binding OutputFmt}"
                     Style="{StaticResource MaterialDesignOutlinedComboBox}">
-                    <ComboBoxItem Content="src"/>
-                    <ComboBoxItem Content="lrc"/>
-                    <ComboBoxItem Content="txt"/>
+                    <ComboBoxItem Content="srt" />
+                    <ComboBoxItem Content="lrc" />
+                    <ComboBoxItem Content="txt" />
                 </ComboBox>
                 <Button
                     Grid.Row="2"
                     Margin="4"
                     Command="{Binding StartRunCommand}"
-                    IsEnabled="{Binding StartButtonEnabled}"
                     Content="开始"
                     Cursor="Hand"
+                    IsEnabled="{Binding StartButtonEnabled}"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}" />
             </Grid>
             <StackPanel
