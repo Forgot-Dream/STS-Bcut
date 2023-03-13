@@ -2,16 +2,10 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace STS_Bcut.src
@@ -22,12 +16,6 @@ namespace STS_Bcut.src
 
         /// <summary>
         /// 申请上传
-        /// {
-        ///"type": 2,
-        ///"name": "test",
-        ///"size": 2000000,
-        ///"ResourceFileType": "m4a"
-        ///}
         /// </summary>
         private const string API_REQ_UPLOAD = "https://member.bilibili.com/x/bcut/rubick-interface/resource/create";
         /// <summary>

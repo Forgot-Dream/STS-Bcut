@@ -2,7 +2,7 @@
 
 使用必剪API，语音转字幕，支持输入声音文件，也支持输入视频文件自动提取音频。
 
-运行需要安装.Net 6 Runtime和ffmpeg
+运行需要安装.NET 6 Runtime和ffmpeg
 
 ---
 

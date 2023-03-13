@@ -3,19 +3,23 @@ using FFMpegCore.Exceptions;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Prism.Commands;
 using Prism.Mvvm;
+using STS_Bcut.src.Common;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input.StylusPlugIns;
 
 namespace STS_Bcut.src
 {
     public class MainViewModel : BindableBase
     {
-        private List<string> supportedaudiofmt = new()
+        /// <summary>
+        /// 支持直接转写的文件格式列表
+        /// </summary>
+        private readonly List<string> supportedaudiofmt = new()
         {
             ".flac",
             ".aac",
@@ -24,14 +28,53 @@ namespace STS_Bcut.src
             ".wav"
         };
 
-        private ObservableCollection<string>? log;
 
-        public ObservableCollection<string>? Log
+        private ObservableCollection<AudioFile> files;
+        /// <summary>
+        /// 音频文件的列表
+        /// </summary>
+        public ObservableCollection<AudioFile> Files
         {
-            get { return log; }
-            set { log = value; RaisePropertyChanged(); }
+            get { return files; }
+            set { files = value; RaisePropertyChanged(); }
         }
 
+        private ObservableCollection<STSTask> tasks;
+        /// <summary>
+        /// 任务队列
+        /// </summary>
+        public ObservableCollection<STSTask> Tasks
+        {
+            get { return tasks; }
+            set { tasks = value; RaisePropertyChanged(); }
+        }
+
+        /// <summary>
+        /// 是否所有都被选中 绑定用
+        /// </summary>
+        public bool? IsAllItemsSelected
+        {
+            get
+            {
+                if (Files == null || Files.Count == 0)
+                    return false;
+                var selected = Files.Select(item => item.IsSelected).Distinct().ToList();
+                return selected.Count == 1 ? selected.Single() : null;
+            }
+            set
+            {
+                if (value.HasValue)
+                {
+                    SelectAll(value.Value, Files);
+                }
+                RaisePropertyChanged();
+            }
+        }
+
+
+        /// <summary>
+        /// 任务是否在运行
+        /// </summary>
         private bool isrunning = false;
 
         public bool StartButtonEnabled { get { return !isrunning; } }
@@ -43,24 +86,62 @@ namespace STS_Bcut.src
 
         public DelegateCommand<object> OpenFileCommand { get; private set; }
         public DelegateCommand<object> StartRunCommand { get; private set; }
+        public DelegateCommand<object> DeleteCommand { get; private set; }
 
         MainViewModel()
         {
-            Log = new();
             OpenFileCommand = new DelegateCommand<object>(OpenFile);
             StartRunCommand = new DelegateCommand<object>(StartRun);
+            DeleteCommand = new DelegateCommand<object>(Delete);
+            Files = new();
+            Tasks = new()
+            {
+                new STSTask("测试"),
+                new STSTask("测试1"),
+                new STSTask("测试2")
+            };
         }
 
+        /// <summary>
+        /// 打开文件的方法
+        /// </summary>
+        /// <param name="obj"></param>
         void OpenFile(object obj)
         {
-            CommonOpenFileDialog openFileDialog = new CommonOpenFileDialog("请选择你要打开的音频文件");
-            openFileDialog.Multiselect = false;
-            if (openFileDialog.ShowDialog() == CommonFileDialogResult.Cancel)
+            CommonOpenFileDialog openFileDialog = new("请选择你要打开的音频文件")
+            {
+                Multiselect = true
+            };
+            if (openFileDialog.ShowDialog() == CommonFileDialogResult.Cancel || openFileDialog.FileNames.Count()==0)
                 return;
-            SoundFilePath = openFileDialog.FileName;
-            logger($"你选择了  {openFileDialog.FileName}");
+            foreach (var path in openFileDialog.FileNames)
+            {
+                Files.Add(new AudioFile()
+                {
+                    FullName = Path.GetFileName(path),
+                    FullPath = path,
+                    IsSelected = false
+                });
+            }
         }
 
+        /// <summary>
+        /// 删除文件的方法
+        /// </summary>
+        /// <param name="obj"></param>
+        void Delete(object obj)
+        {
+            if (Files == null || Files.Count == 0)
+                return;
+            var deletelist = Files.Where(x => x.IsSelected).ToList();
+            foreach (var file in deletelist)
+                Files.Remove(file);
+        }
+
+        /// <summary>
+        /// 开始转字幕
+        /// </summary>
+        /// <param name="obj"></param>
         async void StartRun(object obj)
         {
             await Task.Run(() =>
@@ -135,25 +216,37 @@ namespace STS_Bcut.src
             });
         }
 
+        /// <summary>
+        /// 设置状态
+        /// </summary>
+        /// <param name="state"></param>
         void SetTaskState(bool state)
         {
             isrunning = state;
             RaisePropertyChanged(nameof(StartButtonEnabled));
         }
+
+        /// <summary>
+        /// 选择所有
+        /// </summary>
+        /// <param name="select"></param>
+        /// <param name="audioFiles"></param>
+        private static void SelectAll(bool select, ObservableCollection<AudioFile> audioFiles)
+        {
+            if (audioFiles == null || audioFiles.Count == 0)
+                return;
+            foreach (var model in audioFiles)
+            {
+                model.IsSelected = select;
+            }
+        }
+
         void logger(string log)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                Log.Add(log);
-            });
         }
 
         void clearlogger()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                Log.Clear();
-            });
         }
     }
 }

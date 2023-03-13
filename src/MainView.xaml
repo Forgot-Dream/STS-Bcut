@@ -2,13 +2,15 @@
     x:Class="STS_Bcut.MainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Common="clr-namespace:STS_Bcut.src.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:STS_Bcut"
     xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:src="clr-namespace:STS_Bcut.src"
-    Title="STS-Bcut"
+    Title="STS-Bcut v1.0.1-BETA"
+    Icon="pack://application:,,,/res/BCutIcon.png"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=src:MainViewModel}"
@@ -16,51 +18,67 @@
     mc:Ignorable="d">
     <DockPanel>
         <Grid MinWidth="160">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="40" />
-                </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="40" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Button
-                    Grid.Row="0"
                     Margin="4"
                     Command="{Binding OpenFileCommand}"
-                    Content="选择转字幕文件"
+                    Content="添加文件"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}" />
-                <ComboBox
-                    Grid.Row="1"
-                    Margin="4"
-                    materialdesign:HintAssist.HelperTextFontSize="4"
-                    materialdesign:HintAssist.Hint="选择输出文件格式"
-                    SelectedIndex="{Binding OutputFmt}"
-                    Style="{StaticResource MaterialDesignOutlinedComboBox}">
-                    <ComboBoxItem Content="srt" />
-                    <ComboBoxItem Content="lrc" />
-                    <ComboBoxItem Content="txt" />
-                </ComboBox>
                 <Button
-                    Grid.Row="2"
                     Margin="4"
-                    Command="{Binding StartRunCommand}"
-                    Content="开始"
-                    Cursor="Hand"
-                    IsEnabled="{Binding StartButtonEnabled}"
+                    Command="{Binding DeleteCommand}"
+                    Content="删除选中项"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}" />
-            </Grid>
-            <StackPanel
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                Orientation="Vertical">
-                <TextBlock Margin="4" Text="版本 v1.0.0" />
             </StackPanel>
+            <ComboBox
+                Grid.Row="1"
+                Margin="4"
+                materialdesign:HintAssist.HelperTextFontSize="4"
+                materialdesign:HintAssist.Hint="选择输出文件格式"
+                SelectedIndex="{Binding OutputFmt}"
+                Style="{StaticResource MaterialDesignOutlinedComboBox}">
+                <ComboBoxItem Content="srt" />
+                <ComboBoxItem Content="lrc" />
+                <ComboBoxItem Content="txt" />
+            </ComboBox>
+            <Button
+                Grid.Row="2"
+                Margin="4"
+                Command="{Binding StartRunCommand}"
+                Content="开始"
+                Cursor="Hand"
+                IsEnabled="{Binding StartButtonEnabled}"
+                Style="{StaticResource MaterialDesignOutlinedDarkButton}" />
+            <ListBox
+                Grid.Row="3"
+                ItemsSource="{Binding Tasks}"
+                Style="{StaticResource MaterialDesignNavigationListBox}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type Common:STSTask}">
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <ProgressBar
+                                Width="20"
+                                Height="20"
+                                Value="{Binding Percentage}"
+                                Style="{StaticResource MaterialDesignCircularProgressBar}" />
+                            <TextBlock Text="{Binding Tip}" Margin="4" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
 
         <materialdesign:Card
             Grid.Row="3"
             Margin="4"
             VerticalAlignment="Stretch"
-            materialdesign:ShadowAssist.ShadowDepth="Depth2">
+            materialdesign:ElevationAssist.Elevation="Dp4">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -70,7 +88,53 @@
                     BorderBrush="Gray"
                     BorderThickness="1"
                     CornerRadius="5">
-                    <ItemsControl Margin="5" ItemsSource="{Binding Log}" />
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="True"
+                        HeadersVisibility="All"
+                        ItemsSource="{Binding Files}">
+                        <DataGrid.Resources>
+                            <Common:BindingProxy x:Key="DataContextProxy" Data="{Binding}" />
+                        </DataGrid.Resources>
+                        <DataGrid.Columns>
+                            <DataGridCheckBoxColumn
+                                Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"
+                                EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
+                                ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}">
+                                <DataGridCheckBoxColumn.Header>
+                                    <CheckBox IsChecked="{Binding Data.IsAllItemsSelected, Source={StaticResource DataContextProxy}}" />
+                                </DataGridCheckBoxColumn.Header>
+                                <DataGridCheckBoxColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridCheckBoxColumn.HeaderStyle>
+                            </DataGridCheckBoxColumn>
+                            <DataGridTextColumn
+                                Binding="{Binding FullName}"
+                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                Header="文件名">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn
+                                Binding="{Binding FullPath}"
+                                EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}"
+                                ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
+                                Header="文件路径">
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </Border>
 
             </Grid>
