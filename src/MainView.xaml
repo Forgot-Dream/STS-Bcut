@@ -10,11 +10,11 @@
     xmlns:prism="http://prismlibrary.com/"
     xmlns:src="clr-namespace:STS_Bcut.src"
     Title="STS-Bcut v1.0.1-BETA"
-    Icon="pack://application:,,,/res/BCutIcon.png"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=src:MainViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
+    Icon="pack://application:,,,/res/BCutIcon.png"
     mc:Ignorable="d">
     <DockPanel>
         <Grid MinWidth="160">
@@ -29,11 +29,13 @@
                     Margin="4"
                     Command="{Binding OpenFileCommand}"
                     Content="添加文件"
+                    IsEnabled="{Binding StartButtonEnabled}"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}" />
                 <Button
                     Margin="4"
                     Command="{Binding DeleteCommand}"
                     Content="删除选中项"
+                    IsEnabled="{Binding StartButtonEnabled}"
                     Style="{StaticResource MaterialDesignOutlinedDarkButton}" />
             </StackPanel>
             <ComboBox
@@ -61,13 +63,14 @@
                 Style="{StaticResource MaterialDesignNavigationListBox}">
                 <ListBox.ItemTemplate>
                     <DataTemplate DataType="{x:Type Common:STSTask}">
-                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <ProgressBar
                                 Width="20"
                                 Height="20"
-                                Value="{Binding Percentage}"
-                                Style="{StaticResource MaterialDesignCircularProgressBar}" />
-                            <TextBlock Text="{Binding Tip}" Margin="4" />
+                                Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                Value="{Binding Percentage}" />
+                            <TextBlock Margin="4" Text="{Binding TaskNumber,StringFormat=[{0}]}" />
+                            <TextBlock Margin="4" Text="{Binding Tip}" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
