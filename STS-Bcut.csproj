@@ -6,6 +6,7 @@
     <RootNamespace>STS_Bcut</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

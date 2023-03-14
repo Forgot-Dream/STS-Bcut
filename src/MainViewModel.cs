@@ -60,10 +60,7 @@ namespace STS_Bcut.src
 
         public bool StartButtonEnabled { get { return !isrunning; } }
 
-
         public int OutputFmt { get; set; }
-
-        private string? SoundFilePath;
 
         public DelegateCommand<object> OpenFileCommand { get; private set; }
         public DelegateCommand<object> StartRunCommand { get; private set; }
