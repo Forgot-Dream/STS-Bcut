@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:src="clr-namespace:STS_Bcut.src"
-    Title="STS-Bcut v1.0.1"
+    Title="STS-Bcut v1.0.2"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=src:MainViewModel}"
@@ -69,7 +69,7 @@
                                 Height="20"
                                 Style="{StaticResource MaterialDesignCircularProgressBar}"
                                 Value="{Binding Percentage}" />
-                            <TextBlock Margin="4" Text="{Binding TaskNumber,StringFormat=[{0}]}" />
+                            <TextBlock Margin="4" Text="{Binding TaskNumber, StringFormat=[{0}]}" />
                             <TextBlock Margin="4" Text="{Binding Tip}" />
                         </StackPanel>
                     </DataTemplate>
@@ -92,9 +92,13 @@
                     BorderThickness="1"
                     CornerRadius="5">
                     <DataGrid
+                        x:Name="DataGrid"
+                        AllowDrop="True"
                         AutoGenerateColumns="False"
                         CanUserAddRows="False"
                         CanUserDeleteRows="True"
+                        DragEnter="OnDragEnter"
+                        Drop="File_Drop"
                         HeadersVisibility="All"
                         ItemsSource="{Binding Files}">
                         <DataGrid.Resources>
@@ -139,9 +143,27 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </Border>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Opacity="0.5"
+                    Text="拖动以添加...">
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource MaterialDesignTextBlock}" TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=HasItems}" Value="True">
+                                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=DataGrid, Path=HasItems}" Value="False">
+                                    <Setter Property="TextBlock.Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
 
             </Grid>
         </materialdesign:Card>
     </DockPanel>
-
 </Window>
