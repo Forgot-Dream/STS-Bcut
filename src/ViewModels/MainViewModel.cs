@@ -60,7 +60,7 @@ namespace STS_Bcut.src.ViewModels
         private bool isrunning = false;
 
         public bool StartButtonEnabled => !isrunning;
-
+        public static Config? config;
         public int OutputFmt { get; set; }
 
         public DelegateCommand<object> OpenFileCommand { get; private set; }
@@ -77,6 +77,7 @@ namespace STS_Bcut.src.ViewModels
             Files = new();
             Tasks = new();
             this.dialogHostService = dialogHostService;
+            config = ConfigUtil.ReadConfig();
         }
 
         void ShowDialog(string view)

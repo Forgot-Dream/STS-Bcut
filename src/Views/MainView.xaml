@@ -100,7 +100,9 @@
                     </Button>
                     <Button
                     Margin="4"
-                    Style="{StaticResource MaterialDesignOutlinedButton}" >
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Command="{Binding ShowDialogCommand}"
+                    CommandParameter="SettingsView">
                         <Button.Content>
                             <DockPanel>
                                 <materialdesign:PackIcon Kind="Settings"/>

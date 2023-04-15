@@ -11,6 +11,18 @@ namespace STS_Bcut.src.ViewModels
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand CancelCommand { get; set; }
 
+        public Config config
+        {
+            get
+            {
+                return MainViewModel.config;
+            }
+            set
+            {
+                MainViewModel.config = value;
+            }
+        }
+
         public void OnDialogOpened(IDialogParameters parameters)
         {
         }

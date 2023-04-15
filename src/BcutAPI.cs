@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Windows.Data;
+using STS_Bcut.src.ViewModels;
 
 namespace STS_Bcut.src
 {
@@ -85,7 +86,7 @@ namespace STS_Bcut.src
         }
         public void SetData(FileInfo? file = null, string? datafmt = null)
         {
-            if (file != null && file.Exists)
+            if (file is { Exists: true })
             {
                 var path = file.FullName;
                 if (!supportedaudiofmt.Contains(Path.GetExtension(file.Name)))
@@ -97,7 +98,8 @@ namespace STS_Bcut.src
                 SoundData = File.ReadAllBytes(path);
                 SoundFormat = Path.GetExtension(path).ToLower().Replace(".", string.Empty);
                 SoundName = Path.GetFileName(file.FullName);
-                File.Delete(path);
+                if (MainViewModel.config != null && !MainViewModel.config.SaveConvertedAudio)
+                    File.Delete(path);
             }
             else
             {
@@ -121,21 +123,19 @@ namespace STS_Bcut.src
 
         private void UploadPart()
         {
-            for (int clip = 0; clip < Clips; clip++)
+            for (var clip = 0; clip < Clips; clip++)
             {
-                int start_range = clip * ClipsPerSize;
-                int size = Math.Min(SoundData.Count() - start_range, ClipsPerSize);
+                var start_range = clip * ClipsPerSize;
+                var size = Math.Min(SoundData.Count() - start_range, ClipsPerSize);
                 var reply = APIPut(
                     UploadUrls[clip],
                     new ByteArrayContent(SoundData, start_range, size)
                     );
-                if (reply != null && reply.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    string etag = reply.Headers.GetValues("ETag").First();
-                    Etags.Add(etag);
-                    task.Percentage += size * 75 / SoundData.Length ;
-                    UpdateMessage($"上传分片:{clip + 1}");
-                }
+                if (reply == null || reply.StatusCode != System.Net.HttpStatusCode.OK) continue;
+                var etag = reply.Headers.GetValues("ETag").First();
+                Etags.Add(etag);
+                task.Percentage += size * 75 / SoundData.Length;
+                UpdateMessage($"上传分片:{clip + 1}");
             }
         }
 
