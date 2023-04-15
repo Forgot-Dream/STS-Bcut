@@ -6,17 +6,19 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 
-namespace STS_Bcut.src
+namespace STS_Bcut.src.ViewModels
 {
     public class MainViewModel : BindableBase
     {
+        private IDialogHostService dialogHostService;
+
         private ObservableCollection<AudioFile> files;
         /// <summary>
         /// 音频文件的列表
         /// </summary>
         public ObservableCollection<AudioFile> Files
         {
-            get { return files; }
+            get => files;
             set { files = value; RaisePropertyChanged(); }
         }
 
@@ -26,7 +28,7 @@ namespace STS_Bcut.src
         /// </summary>
         public ObservableCollection<STSTask> Tasks
         {
-            get { return tasks; }
+            get => tasks;
             set { tasks = value; RaisePropertyChanged(); }
         }
 
@@ -52,27 +54,34 @@ namespace STS_Bcut.src
             }
         }
 
-
         /// <summary>
         /// 任务是否在运行
         /// </summary>
         private bool isrunning = false;
 
-        public bool StartButtonEnabled { get { return !isrunning; } }
+        public bool StartButtonEnabled => !isrunning;
 
         public int OutputFmt { get; set; }
 
         public DelegateCommand<object> OpenFileCommand { get; private set; }
         public DelegateCommand<object> StartRunCommand { get; private set; }
         public DelegateCommand<object> DeleteCommand { get; private set; }
+        public DelegateCommand<string> ShowDialogCommand { get; private set; }
 
-        MainViewModel()
+        public MainViewModel(IDialogHostService dialogHostService)
         {
             OpenFileCommand = new DelegateCommand<object>(OpenFile);
             StartRunCommand = new DelegateCommand<object>(StartRun);
             DeleteCommand = new DelegateCommand<object>(Delete);
+            ShowDialogCommand = new DelegateCommand<string>(ShowDialog);
             Files = new();
             Tasks = new();
+            this.dialogHostService = dialogHostService;
+        }
+
+        void ShowDialog(string view)
+        {
+            dialogHostService.ShowDialog(view,null,dialogHostName:"root");
         }
 
         /// <summary>
@@ -85,7 +94,7 @@ namespace STS_Bcut.src
             {
                 Multiselect = true
             };
-            if (openFileDialog.ShowDialog() == CommonFileDialogResult.Cancel || openFileDialog.FileNames.Count()==0)
+            if (openFileDialog.ShowDialog() == CommonFileDialogResult.Cancel || !openFileDialog.FileNames.Any())
                 return;
             foreach (var path in openFileDialog.FileNames)
             {

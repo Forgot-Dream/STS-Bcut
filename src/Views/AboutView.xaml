@@ -1,0 +1,50 @@
+﻿<UserControl
+    x:Class="STS_Bcut.src.Views.AboutView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:STS_Bcut.src.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+    d:DesignHeight="120"
+    d:DesignWidth="400"
+    mc:Ignorable="d">
+    <md:Card md:ElevationAssist.Elevation="Dp4">
+        <DockPanel
+            Margin="4"
+            HorizontalAlignment="Left"
+            LastChildFill="False">
+            <Image
+                Width="40"
+                Height="40"
+                Margin="8"
+                Source="pack://application:,,,/res/BCutIcon.png" />
+            <Border
+                Width="2"
+                Margin="0,4"
+                Background="Aqua"
+                CornerRadius="1"
+                Opacity="0.5" />
+            <StackPanel Margin="4" Orientation="Vertical">
+                <TextBlock
+                    Margin="4,2"
+                    VerticalAlignment="Stretch"
+                    FontSize="16">
+                    <TextBlock Text="本项目开源于" />
+                    <md:PackIcon
+                        Width="20"
+                        Height="20"
+                        Margin="0,2,0,-2"
+                        Kind="Github" />
+                    <Hyperlink Click="Hyperlink_OnClick" NavigateUri="https://github.com/Forgot-Dream/STS-Bcut">Forgot-Dream/STS-Bcut</Hyperlink>
+                </TextBlock>
+                <TextBlock Margin="4,2" Text="开源协议 GPL-3.0 | Copyright © 2023 Forgot-Dream" />
+                <TextBlock
+                    Margin="4"
+                    FontWeight="Bold"
+                    Text="本软件为开源免费软件 不会以任何形式进行售卖" />
+                <TextBlock Margin="4,2" Text="本项目中用到的必剪图标版权均为Bilibili所有" />
+            </StackPanel>
+        </DockPanel>
+    </md:Card>
+</UserControl>

@@ -32,4 +32,8 @@ GNU GENERAL PUBLIC LICENSE Version 3
 
 ---
 
+项目中的**必剪图标版权**皆为[BiliBili](https://www.bilibili.com)所有
+
+---
+
 Copyright © 2023 Forgot-Dream

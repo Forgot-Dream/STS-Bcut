@@ -1,7 +1,10 @@
 ﻿using Prism.DryIoc;
 using Prism.Ioc;
-using STS_Bcut.src;
 using System.Windows;
+using Prism.Services.Dialogs;
+using STS_Bcut.src.ViewModels;
+using STS_Bcut.src.Views;
+using STS_Bcut.src.Common;
 
 namespace STS_Bcut
 {
@@ -17,6 +20,10 @@ namespace STS_Bcut
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.Register<IDialogHostService, DialogHostService>();
+
+            containerRegistry.RegisterForNavigation<AboutView,AboutViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsView,SettingsViewModel>();
             containerRegistry.RegisterForNavigation<MainView, MainViewModel>();
         }
     }

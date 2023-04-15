@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
-using System.Windows.Documents;
-using ImTools;
-using STS_Bcut.src;
 using STS_Bcut.src.Common;
+using STS_Bcut.src.ViewModels;
 
 namespace STS_Bcut
 {
@@ -26,8 +24,8 @@ namespace STS_Bcut
         {
             try
             {
-                var Files = new List<string>((IEnumerable<string>)e.Data.GetData(DataFormats.FileDrop));
-                foreach (var file in Files)
+                var files = new List<string>((IEnumerable<string>)e.Data.GetData(DataFormats.FileDrop));
+                foreach (var file in files)
                 {
                     viewModel.Files.Add(new AudioFile()
                     {
