@@ -6,11 +6,11 @@
     <RootNamespace>STS_Bcut</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <AssemblyVersion>1.0.3.0</AssemblyVersion>
     <ApplicationIcon>res\BCutIcon.ico</ApplicationIcon>
     <PackageIcon>BCutIcon.png</PackageIcon>
     <RepositoryUrl>https://github.com/Forgot-Dream/STS-Bcut</RepositoryUrl>
-    <FileVersion>1.0.2.0</FileVersion>
+    <FileVersion>1.0.3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

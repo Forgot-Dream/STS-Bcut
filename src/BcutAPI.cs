@@ -89,7 +89,8 @@ namespace STS_Bcut.src
             if (file is { Exists: true })
             {
                 var path = file.FullName;
-                if (!supportedaudiofmt.Contains(Path.GetExtension(file.Name)))
+                var isNeedConvent = !supportedaudiofmt.Contains(Path.GetExtension(file.Name));
+                if (isNeedConvent)
                 {
                     UpdateMessage("非支持音频文件，FFMpeg转码中");
                     FFMpeg.ExtractAudio(path, path.Replace(Path.GetExtension(file.Name), ".mp3"));
@@ -98,7 +99,7 @@ namespace STS_Bcut.src
                 SoundData = File.ReadAllBytes(path);
                 SoundFormat = Path.GetExtension(path).ToLower().Replace(".", string.Empty);
                 SoundName = Path.GetFileName(file.FullName);
-                if (MainViewModel.config != null && !MainViewModel.config.SaveConvertedAudio)
+                if (MainViewModel.config != null && !MainViewModel.config.SaveConvertedAudio && isNeedConvent)
                     File.Delete(path);
             }
             else
