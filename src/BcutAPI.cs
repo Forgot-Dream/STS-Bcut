@@ -135,7 +135,6 @@ namespace STS_Bcut.src
                 if (reply == null || reply.StatusCode != System.Net.HttpStatusCode.OK) continue;
                 var etag = reply.Headers.GetValues("ETag").First();
                 Etags.Add(etag);
-                task.Percentage += size * 75 / SoundData.Length;
                 UpdateMessage($"上传分片:{clip + 1}");
             }
         }
@@ -170,7 +169,6 @@ namespace STS_Bcut.src
             var data = JsonConvert.DeserializeObject<ResultResponse>(reply["data"].ToString());
             if (data.state == ResultStateEnum.COMLETE)
             {
-                task.Percentage = 95;
                 UpdateMessage("任务已完成");
                 return JsonConvert.DeserializeObject<STSData>(data.result);
             }
@@ -230,10 +228,8 @@ namespace STS_Bcut.src
             {
                 builder.Append('?');
                 int i = 0;
-                foreach (var item in Params)
+                foreach (var item in Params.Where(item => item.Value != null))
                 {
-                    if (item.Value == null)
-                        continue;
                     if (i > 0)
                         builder.Append('&');
                     builder.AppendFormat("{0}={1}", item.Key, item.Value);

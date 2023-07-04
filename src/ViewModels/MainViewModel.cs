@@ -136,7 +136,7 @@ namespace STS_Bcut.src.ViewModels
             SetTaskState(true);
             foreach(var task in Tasks)
             {
-                var result = await task.Run();
+                _ = await task.Run();
             }
             SetTaskState(false);
         }

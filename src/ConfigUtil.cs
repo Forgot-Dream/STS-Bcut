@@ -11,10 +11,6 @@ namespace STS_Bcut.src
     {
         public static string ConfigPath = System.IO.Directory.GetCurrentDirectory() + "/sts-bcut-config.json";
 
-        public static void WriteConfig(Config config)
-        {
-            File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(config), Encoding.UTF8);
-        }
 
         public static Config ReadConfig()
         {
@@ -31,5 +27,11 @@ namespace STS_Bcut.src
             config ??= new() { SaveConvertedAudio = false };
             return config;
         }
+
+        public static void WriteConfig(Config config)
+        {
+            File.WriteAllText(ConfigPath, JsonConvert.SerializeObject(config,Formatting.Indented), Encoding.UTF8);
+        }
+
     }
 }

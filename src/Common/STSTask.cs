@@ -21,16 +21,6 @@ namespace STS_Bcut.src.Common
             set { tip = value; RaisePropertyChanged(); }
         }
 
-        private int percentage;
-        /// <summary>
-        /// 进度条的百分比
-        /// </summary>
-        public int Percentage
-        {
-            get { return percentage; }
-            set { percentage = value; RaisePropertyChanged(); }
-        }
-
         private string statuscolor;
         /// <summary>
         /// 状态提示的颜色
@@ -41,6 +31,32 @@ namespace STS_Bcut.src.Common
             set { statuscolor = value; RaisePropertyChanged(); }
         }
 
+        private string showProgressBar;
+
+        public string ShowProgressBar
+        {
+            get { return showProgressBar; }
+            set { showProgressBar = value; RaisePropertyChanged();}
+        }
+
+        private string iconKind;
+
+        public string IconKind
+        {
+            get { return iconKind; }
+            set { iconKind = value; RaisePropertyChanged();}
+        }
+
+        private string iconVisibility;
+
+        public string IconVisibility
+        {
+            get { return iconVisibility; }
+            set { iconVisibility = value; RaisePropertyChanged();}
+        }
+
+
+
         public int TaskNumber { get; set; }
         private int OutputFmt;
 
@@ -49,10 +65,14 @@ namespace STS_Bcut.src.Common
         public STSTask(int number, int outputfmt, AudioFile audioFile)
         {
             TaskNumber = number;
-            Percentage = 0;
             StatusColor = "Blue";
             AudioFile = audioFile;
             OutputFmt = outputfmt;
+
+            ShowProgressBar = "Visible";
+            IconKind = "SuccessBold";
+            IconVisibility = "Collapsed";
+
             Tip = "等待识别中...";
         }
 
@@ -76,41 +96,45 @@ namespace STS_Bcut.src.Common
                             File.WriteAllText(AudioFile.FullPath.Replace(Path.GetExtension(AudioFile.FullPath), ".txt"), data.ToTxt());
                             break;
                     }
-                    Percentage = 100;
                     StatusColor = "Green";
                     Tip = "字幕已导出";
+                    ShowProgressBar = "Collapsed";
+                    IconVisibility = "Visible";
                     return true;
 
                 }
                 catch (FFMpegException e)
                 {
                     Debug.WriteLine(e.Message);
-                    ThrowExpection("FFMpeg转码出错");
+                    ThrowException("FFMpeg转码出错");
                 }
                 catch (HttpRequestException e)
                 {
                     Debug.WriteLine(e.Message);
-                    ThrowExpection("请求出错");
+                    ThrowException("请求出错");
                 }
                 catch (ValueUnavailableException e)
                 {
                     Debug.WriteLine(e.Message);
-                    ThrowExpection("无可用数据");
+                    ThrowException("无可用数据");
                 }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-                    ThrowExpection("未知错误 请联系作者提供复现过程");
+                    ThrowException("未知错误 请联系作者提供复现过程");
                 }
                 return false;
             });
 
         }
 
-        private void ThrowExpection(string message)
+        private void ThrowException(string message)
         {
             Tip = message;
             StatusColor = "Red";
+            ShowProgressBar = "Collapsed";
+            IconVisibility = "Visible";
+            IconKind = "ErrorOutline";
         }
 
 

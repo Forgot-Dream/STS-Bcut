@@ -31,7 +31,7 @@
                 <TextBlock
                     Margin="0,0,10,0"
                     FontSize="16"
-                    Text="是否删除转换后的音频文件" />
+                    Text="删除转换后的音频文件" />
                 <ToggleButton IsChecked="{Binding config.SaveConvertedAudio}" />
             </StackPanel>
 
