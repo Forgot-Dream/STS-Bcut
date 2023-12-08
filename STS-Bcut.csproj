@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
     <RootNamespace>STS_Bcut</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
     <ApplicationIcon>res\BCutIcon.ico</ApplicationIcon>
     <PackageIcon>BCutIcon.png</PackageIcon>
     <RepositoryUrl>https://github.com/Forgot-Dream/STS-Bcut</RepositoryUrl>
-    <FileVersion>1.0.3.0</FileVersion>
+    <FileVersion>1.0.5.0</FileVersion>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FFMpegCore" Version="5.0.2" />
-    <PackageReference Include="MaterialDesignThemes" Version="4.7.1" />
-    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="FFMpegCore" Version="5.1.0" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
     <PackageReference Include="Prism.DryIoc" Version="8.1.97" />
     <PackageReference Include="Prism.Wpf" Version="8.1.97" />

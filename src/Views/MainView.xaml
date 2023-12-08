@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
     xmlns:viewmodels="clr-namespace:STS_Bcut.src.ViewModels"
-    Title="STS-Bcut v1.0.4"
+    Title="STS-Bcut v1.0.5"
     Width="800"
     Height="450"
     d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"

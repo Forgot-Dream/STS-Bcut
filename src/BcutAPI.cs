@@ -60,6 +60,9 @@ namespace STS_Bcut.src
         private STSTask task;
         private FileInfo fileInfo;
 
+        private HttpClient httpClient;
+
+
         public BcutAPI(STSTask task, FileInfo? file = null)
         {
             this.task = task;
@@ -68,6 +71,10 @@ namespace STS_Bcut.src
             {
                 fileInfo = file;
             }
+            
+            //init http client
+            httpClient = new();
+            httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
         }
 
         public STSData Run()
@@ -167,21 +174,20 @@ namespace STS_Bcut.src
             };
             var reply = APIGet(API_QUERY_RESULT, json);
             var data = JsonConvert.DeserializeObject<ResultResponse>(reply["data"].ToString());
-            if (data.state == ResultStateEnum.COMLETE)
+            switch (data.state)
             {
-                UpdateMessage("任务已完成");
-                return JsonConvert.DeserializeObject<STSData>(data.result);
-            }
-            else if (data.state == ResultStateEnum.STOP)
-            {
-            }
-            else if (data.state == ResultStateEnum.RUNNING)
-            {
-                UpdateMessage("任务正在识别中");
-            }
-            else if (data.state == ResultStateEnum.ERROR)
-            {
-                throw new Exception("任务错误");
+                case ResultStateEnum.COMLETE:
+                    UpdateMessage("任务已完成");
+                    return JsonConvert.DeserializeObject<STSData>(data.result);
+                case ResultStateEnum.STOP:
+                    break;
+                case ResultStateEnum.RUNNING:
+                    UpdateMessage("任务正在识别中");
+                    break;
+                case ResultStateEnum.ERROR:
+                    throw new Exception("任务错误");
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             return null;
         }
@@ -194,9 +200,7 @@ namespace STS_Bcut.src
         /// <returns>json对象</returns>
         private JToken APIPost(string url, object Data)
         {
-            HttpClient httpClient = new();
             HttpRequestMessage requestMessage = new(HttpMethod.Post, url);
-            requestMessage.Headers.Add("Accept", "application/json");
             StringContent content = new(JsonConvert.SerializeObject(Data), Encoding.UTF8, "application/json");
             requestMessage.Content = content;
             var response = httpClient.Send(requestMessage);
@@ -211,9 +215,7 @@ namespace STS_Bcut.src
 
         private HttpResponseMessage APIPut(string url, ByteArrayContent data)
         {
-            HttpClient httpClient = new();
             HttpRequestMessage requestMessage = new(HttpMethod.Put, url);
-            requestMessage.Headers.Add("Accept", "application/json");
             requestMessage.Content = data;
             var response = httpClient.Send(requestMessage);
             response.EnsureSuccessStatusCode();
@@ -236,9 +238,7 @@ namespace STS_Bcut.src
                     i++;
                 }
             }
-            HttpClient httpClient = new();
             HttpRequestMessage request = new(HttpMethod.Get, builder.ToString());
-            request.Headers.Add("Accept", "application/json"); //设置接受类型
             var response = httpClient.Send(request);
             response.EnsureSuccessStatusCode();
             Stream myResponseStream = response.Content.ReadAsStream();
