@@ -51,8 +51,8 @@ namespace STS_Bcut.src
 
     public enum ResultStateEnum : int
     {
-        STOP = 1,
-        RUNNING = 2,
+        WAITING = 0,
+        RUNNING = 1,
         ERROR = 3,
         COMLETE = 4
     }

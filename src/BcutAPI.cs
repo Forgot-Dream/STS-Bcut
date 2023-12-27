@@ -179,7 +179,8 @@ namespace STS_Bcut.src
                 case ResultStateEnum.COMLETE:
                     UpdateMessage("任务已完成");
                     return JsonConvert.DeserializeObject<STSData>(data.result);
-                case ResultStateEnum.STOP:
+                case ResultStateEnum.WAITING:
+                    UpdateMessage("任务等待中");
                     break;
                 case ResultStateEnum.RUNNING:
                     UpdateMessage("任务正在识别中");
