@@ -6,44 +6,42 @@ using System.Windows;
 using STS_Bcut.src.Common;
 using STS_Bcut.src.ViewModels;
 
-namespace STS_Bcut
+namespace STS_Bcut;
+
+/// <summary>
+///     Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainView : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainView : Window
+    private readonly MainViewModel viewModel;
+
+    public MainView()
     {
-        private MainViewModel viewModel;
-        public MainView()
-        {
-            InitializeComponent();
-            viewModel = (MainViewModel?)DataContext;
-        }
+        InitializeComponent();
+        viewModel = (MainViewModel?)DataContext;
+    }
 
-        private void File_Drop(object sender, DragEventArgs e)
+    private void File_Drop(object sender, DragEventArgs e)
+    {
+        try
         {
-            try
-            {
-                var files = new List<string>((IEnumerable<string>)e.Data.GetData(DataFormats.FileDrop));
-                foreach (var file in files)
+            var files = new List<string>((IEnumerable<string>)e.Data.GetData(DataFormats.FileDrop));
+            foreach (var file in files)
+                viewModel.Files.Add(new AudioFile
                 {
-                    viewModel.Files.Add(new AudioFile()
-                    {
-                        FullName = Path.GetFileName(file),
-                        FullPath = file,
-                        IsSelected = false
-                    });
-                }
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception);
-            }
+                    FullName = Path.GetFileName(file),
+                    FullPath = file,
+                    IsSelected = false
+                });
         }
-
-        private void OnDragEnter(object sender, DragEventArgs e)
+        catch (Exception exception)
         {
-            e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
+            Debug.WriteLine(exception);
         }
+    }
+
+    private void OnDragEnter(object sender, DragEventArgs e)
+    {
+        e.Effects = e.Data.GetDataPresent(DataFormats.FileDrop) ? DragDropEffects.Link : DragDropEffects.None;
     }
 }

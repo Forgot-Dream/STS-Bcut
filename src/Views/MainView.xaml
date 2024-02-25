@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Common="clr-namespace:STS_Bcut.src.Common"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:STS_Bcut"
     xmlns:materialdesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
@@ -79,7 +78,10 @@
                                         IsIndeterminate="True"
                                         Style="{StaticResource MaterialDesignCircularProgressBar}"
                                         Visibility="{Binding ShowProgressBar}" />
-                                    <materialdesign:PackIcon Width="20" Height="20" Margin="2" Kind="{Binding IconKind}" Visibility="{Binding IconVisibility}" Foreground="{Binding StatusColor}"/>
+                                    <materialdesign:PackIcon Width="20" Height="20" Margin="2"
+                                                             Kind="{Binding IconKind}"
+                                                             Visibility="{Binding IconVisibility}"
+                                                             Foreground="{Binding StatusColor}" />
                                 </Grid>
                                 <TextBlock Margin="4" Text="{Binding TaskNumber, StringFormat=[{0}]}" />
                                 <TextBlock Margin="4" Text="{Binding Tip}" />
@@ -120,7 +122,6 @@
             </Grid>
 
             <materialdesign:Card
-                Grid.Row="3"
                 Margin="4"
                 VerticalAlignment="Stretch"
                 materialdesign:ElevationAssist.Elevation="Dp4">
@@ -152,10 +153,12 @@
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"
                                     ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}">
                                     <DataGridCheckBoxColumn.Header>
-                                        <CheckBox IsChecked="{Binding Data.IsAllItemsSelected, Source={StaticResource DataContextProxy}}" />
+                                        <CheckBox
+                                            IsChecked="{Binding Data.IsAllItemsSelected, Source={StaticResource DataContextProxy}}" />
                                     </DataGridCheckBoxColumn.Header>
                                     <DataGridCheckBoxColumn.HeaderStyle>
-                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
+                                               TargetType="{x:Type DataGridColumnHeader}">
                                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                                         </Style>
                                     </DataGridCheckBoxColumn.HeaderStyle>
@@ -166,7 +169,8 @@
                                     ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
                                     Header="文件名">
                                     <DataGridTextColumn.HeaderStyle>
-                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
+                                               TargetType="{x:Type DataGridColumnHeader}">
                                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                                         </Style>
                                     </DataGridTextColumn.HeaderStyle>
@@ -177,7 +181,8 @@
                                     ElementStyle="{StaticResource MaterialDesignDataGridTextColumnStyle}"
                                     Header="文件路径">
                                     <DataGridTextColumn.HeaderStyle>
-                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}" TargetType="{x:Type DataGridColumnHeader}">
+                                        <Style BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}"
+                                               TargetType="{x:Type DataGridColumnHeader}">
                                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                                         </Style>
                                     </DataGridTextColumn.HeaderStyle>

@@ -1,6 +1,6 @@
-﻿namespace STS_Bcut.src.Common
+﻿namespace STS_Bcut.src.Common;
+
+public class Config
 {
-    public class Config{
-        public bool SaveConvertedAudio { get; set; }
-    }
+    public bool SaveConvertedAudio { get; set; }
 }

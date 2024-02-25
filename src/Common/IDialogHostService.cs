@@ -1,12 +1,11 @@
-﻿using Prism.Services.Dialogs;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Prism.Services.Dialogs;
 
-namespace STS_Bcut.src.Common
+namespace STS_Bcut.src.Common;
+
+public interface IDialogHostService : IDialogService
 {
-    public interface IDialogHostService : IDialogService
-    {
-        string DialogHostName { get; set; }
+    string DialogHostName { get; set; }
 
-        Task<IDialogResult> ShowDialog(string name, IDialogParameters? parameters, string dialogHostName = "Root");
-    }
+    Task<IDialogResult> ShowDialog(string name, IDialogParameters? parameters, string dialogHostName = "Root");
 }

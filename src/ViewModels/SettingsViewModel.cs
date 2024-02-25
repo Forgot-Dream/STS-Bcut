@@ -3,28 +3,21 @@ using Prism.Mvvm;
 using Prism.Services.Dialogs;
 using STS_Bcut.src.Common;
 
-namespace STS_Bcut.src.ViewModels
+namespace STS_Bcut.src.ViewModels;
+
+public class SettingsViewModel : BindableBase, IDialogHostAware
 {
-    public class SettingsViewModel:BindableBase,IDialogHostAware
+    public Config config
     {
-        public string DialogHostName { get; set; }
-        public DelegateCommand SaveCommand { get; set; }
-        public DelegateCommand CancelCommand { get; set; }
+        get => MainViewModel.config;
+        set => MainViewModel.config = value;
+    }
 
-        public Config config
-        {
-            get
-            {
-                return MainViewModel.config;
-            }
-            set
-            {
-                MainViewModel.config = value;
-            }
-        }
+    public string DialogHostName { get; set; }
+    public DelegateCommand SaveCommand { get; set; }
+    public DelegateCommand CancelCommand { get; set; }
 
-        public void OnDialogOpened(IDialogParameters parameters)
-        {
-        }
+    public void OnDialogOpened(IDialogParameters parameters)
+    {
     }
 }

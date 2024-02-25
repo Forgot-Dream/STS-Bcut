@@ -1,39 +1,31 @@
 ﻿using Prism.Mvvm;
 
-namespace STS_Bcut.src.Common
+namespace STS_Bcut.src.Common;
+
+public class AudioFile : BindableBase
 {
-    public class AudioFile : BindableBase
+    private bool isselected;
+
+    /// <summary>
+    ///     是否被选中
+    /// </summary>
+    public bool IsSelected
     {
-        private bool isselected;
-        /// <summary>
-        /// 是否被选中
-        /// </summary>
-        public bool IsSelected
+        get => isselected;
+        set
         {
-            get { return isselected; }
-            set { isselected = value; RaisePropertyChanged(); }
+            isselected = value;
+            RaisePropertyChanged();
         }
-
-
-        private string fullname;
-        /// <summary>
-        /// 音频文件全称
-        /// </summary>
-        public string FullName
-        {
-            get { return fullname; }
-            set { fullname = value; }
-        }
-
-        private string fullpath;
-        /// <summary>
-        /// 绝对路径
-        /// </summary>
-        public string FullPath
-        {
-            get { return fullpath; }
-            set { fullpath = value; }
-        }
-
     }
+
+    /// <summary>
+    ///     音频文件全称
+    /// </summary>
+    public string FullName { get; set; }
+
+    /// <summary>
+    ///     绝对路径
+    /// </summary>
+    public string FullPath { get; set; }
 }
